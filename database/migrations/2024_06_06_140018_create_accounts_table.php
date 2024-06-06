@@ -11,15 +11,14 @@ class CreateAccountsTable extends Migration
         Schema::create('accounts', function (Blueprint $table) {
             $table->id('account_id');
             $table->unsignedBigInteger('user_id');
+            $table->string('user_type'); // Column to distinguish user type
             $table->string('account_username');
             $table->string('account_password');
             $table->string('role');
             $table->timestamps();
 
-            // Foreign key constraints
-            $table->foreign('user_id')->references('student_id')->on('students')->onDelete('cascade');
-            $table->foreign('user_id')->references('teacher_id')->on('teachers')->onDelete('cascade');
-            $table->foreign('user_id')->references('manager_id')->on('managers')->onDelete('cascade');
+            // Adding index for the polymorphic relationship
+            $table->index(['user_id', 'user_type']);
         });
     }
 

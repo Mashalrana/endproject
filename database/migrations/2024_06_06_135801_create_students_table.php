@@ -14,7 +14,8 @@ class CreateStudentsTable extends Migration
             $table->string('student_address');
             $table->string('student_postcode');
             $table->string('student_city');
-            $table->foreignId('class_id')->constrained('classes');
+            $table->unsignedBigInteger('class_id');
+            $table->foreign('class_id')->references('class_id')->on('classes')->onDelete('cascade');
             $table->timestamps();
         });
     }

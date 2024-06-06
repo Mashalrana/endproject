@@ -10,11 +10,14 @@ class CreateConversationsTable extends Migration
     {
         Schema::create('conversations', function (Blueprint $table) {
             $table->id('conversation_id');
-            $table->foreignId('student_id')->constrained('students');
-            $table->foreignId('teacher_id')->constrained('teachers');
+            $table->unsignedBigInteger('student_id');
+            $table->unsignedBigInteger('teacher_id');
             $table->date('conversation_date');
             $table->text('conversation_content');
             $table->timestamps();
+
+            $table->foreign('student_id')->references('student_id')->on('students')->onDelete('cascade');
+            $table->foreign('teacher_id')->references('teacher_id')->on('teachers')->onDelete('cascade');
         });
     }
 

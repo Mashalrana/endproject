@@ -11,7 +11,8 @@ class CreateClassesTable extends Migration
         Schema::create('classes', function (Blueprint $table) {
             $table->id('class_id');
             $table->string('class_name');
-            $table->foreignId('mentor')->constrained('teachers');
+            $table->unsignedBigInteger('mentor');
+            $table->foreign('mentor')->references('teacher_id')->on('teachers')->onDelete('cascade');
             $table->timestamps();
         });
     }
