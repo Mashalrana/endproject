@@ -1,0 +1,23 @@
+{
+  "trailingComma": "es5",
+
+  "printWidth": 80,
+
+  "arrowParens": "always",
+
+  "embeddedLanguageFormatting": "auto",
+
+  "jsxSingleQuote": false,
+
+  "semi": true,
+
+  "htmlWhitespaceSensitivity": "css",
+
+  "endOfLine": "lf",
+
+  "tabWidth": 2,
+  "useTabs": false,
+
+  "bracketSpacing": true,
+  "jsxBracketSameLine": false
+}
