@@ -9,12 +9,12 @@ class CreateClassesTable extends Migration
     public function up()
     {
         Schema::create('classes', function (Blueprint $table) {
-            $table->id('class_id');
+            $table->id(); // Dit zorgt voor een auto-incrementing 'id' kolom
             $table->string('class_name');
             $table->unsignedBigInteger('mentor');
             $table->timestamps();
 
-            $table->foreign('mentor')->references('teacher_id')->on('teachers')->onDelete('cascade');
+            $table->foreign('mentor')->references('id')->on('teachers')->onDelete('cascade');
         });
     }
 

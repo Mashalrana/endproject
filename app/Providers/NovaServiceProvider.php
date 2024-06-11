@@ -2,18 +2,25 @@
 
 namespace App\Providers;
 
-use Laravel\Nova\Menu\MenuGroup;
 use Laravel\Nova\Nova;
+use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\NovaApplicationServiceProvider;
+use Visanduma\NovaTwoFactor\Models\TwoFa;
+use Laravel\Nova\Menu\MenuGroup;
 use Laravel\Nova\Menu\Menu;
-use App\Nova\Dashboards\Main;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
-use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Events\ServingNova;
-use App\Nova\CustomerSupportResource;
 use Illuminate\Support\Facades\Blade;
-use Visanduma\NovaTwoFactor\Models\TwoFa;
-use Laravel\Nova\NovaApplicationServiceProvider;
+use App\Nova\Dashboards\Main;
+use App\Nova\Manager;
+use App\Nova\Account;
+use App\Nova\Teacher;
+use App\Nova\ClassResource;
+use App\Nova\Student;
+use App\Nova\Subject;
+use App\Nova\Schedule;
+use App\Nova\Conversation;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
@@ -25,23 +32,20 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+
+        // Customize the footer
         Nova::footer(function () {
             return Blade::render(
-                '<p class="text-center">Made with 💛 by Metis in cooperation with <a class="text-sky-600" href="https://www.codeerbedrijf.nl" target="_blank">LemonLabs  B.V.</a></p>'
+                '<p class="text-center">Made with 💛 by Metis in cooperation with <a class="text-sky-600" href="https://www.codeerbedrijf.nl" target="_blank">LemonLabs B.V.</a></p>'
             );
         });
 
+        // Disable the notification center
         Nova::withoutNotificationCenter();
 
-
+        // Customize the main menu
         Nova::mainMenu(function (\Illuminate\Http\Request $request) {
             $twoFa = TwoFa::where('user_id', $request->user()->id)->first();
-
-            // if ($twoFa && $twoFa->google2fa_enable == 1) {
-            //     $return = [
-            //         MenuSection::resource(CustomerSupportResource::class)->icon("support"),
-            //     ];
-            // }
 
             $settings = [
                 MenuItem::make("Gebruikers", "/resources/users")->icon("users"),
@@ -63,9 +67,27 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->collapsable()
                 ->collapsedByDefault();
 
+            $customFunctionalities = [
+                MenuItem::resource(Manager::class),
+                MenuItem::resource(Account::class),
+                MenuItem::resource(Teacher::class),
+                MenuItem::resource(ClassResource::class),
+                MenuItem::resource(Student::class),
+                MenuItem::resource(Subject::class),
+                MenuItem::resource(Schedule::class),
+                MenuItem::resource(Conversation::class),
+            ];
+
+            $return[] = MenuSection::make('Custom Functionalities', [
+                MenuGroup::make('Functionalities', $customFunctionalities)
+            ])->icon('archive')
+                ->collapsable()
+                ->collapsedByDefault();
+
             return $return;
         });
 
+        // Customize the user menu
         Nova::userMenu(function (\Illuminate\Http\Request $request, Menu $menu) {
             $menu->prepend(
                 MenuItem::make(
@@ -112,7 +134,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function dashboards()
     {
-        return [Main::make()->showRefreshButton()];
+        return [
+            new Main(),
+        ];
     }
 
     /**

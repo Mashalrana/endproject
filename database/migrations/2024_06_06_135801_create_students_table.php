@@ -9,14 +9,15 @@ class CreateStudentsTable extends Migration
     public function up()
     {
         Schema::create('students', function (Blueprint $table) {
-            $table->id('student_id');
+            $table->id(); // Dit zorgt voor een auto-incrementing 'id' kolom
             $table->string('student_name');
             $table->string('student_address');
             $table->string('student_postcode');
             $table->string('student_city');
             $table->unsignedBigInteger('class_id');
-            $table->foreign('class_id')->references('class_id')->on('classes')->onDelete('cascade');
             $table->timestamps();
+
+            $table->foreign('class_id')->references('id')->on('classes')->onDelete('cascade');
         });
     }
 

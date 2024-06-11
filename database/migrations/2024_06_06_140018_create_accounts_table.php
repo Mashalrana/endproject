@@ -9,16 +9,11 @@ class CreateAccountsTable extends Migration
     public function up()
     {
         Schema::create('accounts', function (Blueprint $table) {
-            $table->id('account_id');
-            $table->unsignedBigInteger('user_id');
-            $table->string('user_type'); // Column to distinguish user type
+            $table->id();
             $table->string('account_username');
             $table->string('account_password');
             $table->string('role');
             $table->timestamps();
-
-            // Adding index for the polymorphic relationship
-            $table->index(['user_id', 'user_type']);
         });
     }
 

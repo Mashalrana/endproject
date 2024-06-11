@@ -9,7 +9,7 @@ class CreateTeachersTable extends Migration
     public function up()
     {
         Schema::create('teachers', function (Blueprint $table) {
-            $table->id('teacher_id');
+            $table->id(); // Dit zorgt voor een auto-incrementing 'id' kolom
             $table->string('teacher_name');
             $table->string('teacher_address');
             $table->string('teacher_postcode');

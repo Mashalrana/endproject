@@ -9,7 +9,7 @@ class CreateSubjectsTable extends Migration
     public function up()
     {
         Schema::create('subjects', function (Blueprint $table) {
-            $table->id('subject_id');
+            $table->id(); // Dit zorgt voor een auto-incrementing 'id' kolom
             $table->string('subject_name');
             $table->timestamps();
         });
