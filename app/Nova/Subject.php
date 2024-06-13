@@ -28,5 +28,5 @@ class Subject extends Resource
     public function filters(Request $request)
     {
         return [];
-    }
+    }   
 }

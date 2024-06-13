@@ -25,7 +25,7 @@ class ClassResource extends Resource
             ID::make(__('ID'), 'id')->sortable(),
             Text::make('Class Name', 'class_name')->sortable()->rules('required', 'max:255'),
             BelongsTo::make('Mentor', 'mentor', Teacher::class),
-            HasMany::make('Students', 'students', Student::class),
+            HasMany::make('Students', 'students', Student::class), // Ensure this is correct
         ];
     }
 
